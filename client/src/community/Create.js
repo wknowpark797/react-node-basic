@@ -48,10 +48,10 @@ export default Create;
 
 /*
 	[ CRUD ]
-	Create (저장)
-	Read (읽어오기)
-	Update (수정)
-	Delete (삭제)
+	- Create (저장)
+	- Read (읽어오기)
+	- Update (수정)
+	- Delete (삭제)
 
-	-> REST API
+	-> REST API를 활용하여 구조적으로 개선
 */

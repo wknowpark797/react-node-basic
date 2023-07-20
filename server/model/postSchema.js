@@ -2,20 +2,20 @@
   [ 데이터 베이스 ]
 
   - table 형식의 DB
-    - Oracle, mySQL, msSQL, mariaDB
+    - ( Oracle, mySQL, msSQL, mariaDB )
     - SQL 표준 문법을 통해 데이터 입출력
     - RDBMS
 
   - json 형식의 DB
-    - MongoDB
+    - ( MongoDB )
     - SQL 표준 문법이 아닌 자바스크립트 구문으로 데이터 입출력
-    - NoSQL DB
+    - NoSQL
 
   - Model
     - DB에 저장되는 데이터 객체
 
   - Schema
-    - 데이터베이스에 저장될 자료형식과 키값을 강제하는 시스템적인 틀
+    - 데이터베이스에 저장될 자료형식, 키값을 강제하는 시스템적인 틀
 */
 
 const mongoose = require('mongoose');
