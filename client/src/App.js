@@ -1,20 +1,48 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
-	const item = { name: 'David' };
+	const [Title, setTitle] = useState('');
+	const [Content, setContent] = useState('');
 
-	useEffect(() => {
+	const handleCreate = () => {
+		const item = { title: Title, content: Content };
 		axios
-			.post('/api/send', item)
-			.then((res) => {
-				// 서버에서 응답이 성공적으로 넘어오면 해당 값을 콘솔로 출력
-				console.log(res);
-			})
+			.post('/api/create', item)
+			.then((res) => console.log(res))
 			.catch((err) => console.log(err));
-	}, []);
+	};
 
-	return <h1>Hello Client</h1>;
+	useEffect(() => {}, []);
+
+	return (
+		<section>
+			<label htmlFor='title'>Title</label>
+			<input type='text' id='title' value={Title} onChange={(e) => setTitle(e.target.value)} />
+			<br />
+			<label htmlFor='content'>Content</label>
+			<textarea
+				name='content'
+				id='content'
+				cols='30'
+				rows='3'
+				value={Content}
+				onChange={(e) => setContent(e.target.value)}
+			></textarea>
+			<br />
+			<button onClick={handleCreate}>SEND</button>
+		</section>
+	);
 }
 
 export default App;
+
+/*
+	[ CRUD ]
+	Create (저장)
+	Read (읽어오기)
+	Update (수정)
+	Delete (삭제)
+
+	-> REST API
+*/
