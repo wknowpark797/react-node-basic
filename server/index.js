@@ -5,6 +5,7 @@ const app = express();
 const port = 5000; // 웹서버 구동을 5000번 포트로 응답받도록 설정
 
 // 클라이언트로부터 보내진 데이터를 전달받도록 설정 (body-parser 설정)
+// body 객체에서 문자열로 전달해야 한다.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -12,6 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.listen(port, () => {
+	// mongoose로 몽고디비 데이터베이스 연동까지 확인할 수 있다.
 	mongoose
 		.connect('mongodb+srv://decodelab:!abcd1234@cluster0.vm1kfyg.mongodb.net/')
 		//접속 성공시
@@ -20,8 +22,10 @@ app.listen(port, () => {
 		.catch((err) => console.log(err));
 });
 
+/***** 라우터 설정 *****/
 app.get('/', (req, res) => {
 	//서버에서 5000포트로 접속하면 static폴더로 지정되어 있는 build안쪽의 index.html을 화면에 내보냄
+	// __dirname: 현재 서버폴더의 경로를 자동으로 잡아준다.
 	res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
@@ -32,6 +36,6 @@ app.get('*', (req, res) => {
 
 // 클라이언트로부터 전달된 요청 라우터
 app.post('/api/send', (req, res) => {
-	console.log('전달받은 요청: ', req.body);
-	res.json({ success: true, result: req.body.name + '성공' });
+	console.log('전달받은 요청: ', req.body); // 요청객체
+	res.json({ success: true, result: req.body.name + '성공' }); // 응답객체
 });
