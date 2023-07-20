@@ -1,48 +1,21 @@
-import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Header from './common/Header';
+import Main from './common/Main';
+import List from './community/List';
+import Create from './community/Create';
 
 function App() {
-	const [Title, setTitle] = useState('');
-	const [Content, setContent] = useState('');
-
-	const handleCreate = () => {
-		const item = { title: Title, content: Content };
-		axios
-			.post('/api/create', item)
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
-	};
-
-	useEffect(() => {}, []);
-
 	return (
-		<section>
-			<label htmlFor='title'>Title</label>
-			<input type='text' id='title' value={Title} onChange={(e) => setTitle(e.target.value)} />
-			<br />
-			<label htmlFor='content'>Content</label>
-			<textarea
-				name='content'
-				id='content'
-				cols='30'
-				rows='3'
-				value={Content}
-				onChange={(e) => setContent(e.target.value)}
-			></textarea>
-			<br />
-			<button onClick={handleCreate}>SEND</button>
-		</section>
+		<>
+			<Header />
+
+			<Routes>
+				<Route path='/' element={<Main />} />
+				<Route path='/list' element={<List />} />
+				<Route path='/create' element={<Create />} />
+			</Routes>
+		</>
 	);
 }
 
 export default App;
-
-/*
-	[ CRUD ]
-	Create (저장)
-	Read (읽어오기)
-	Update (수정)
-	Delete (삭제)
-
-	-> REST API
-*/
