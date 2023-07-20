@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import Layout from '../common/Layout';
 
 function Create() {
 	const [Title, setTitle] = useState('');
@@ -16,7 +17,7 @@ function Create() {
 	useEffect(() => {}, []);
 
 	return (
-		<section>
+		<Layout name={'Post'}>
 			<label htmlFor='title'>Title</label>
 			<input type='text' id='title' value={Title} onChange={(e) => setTitle(e.target.value)} />
 			<br />
@@ -31,7 +32,7 @@ function Create() {
 			></textarea>
 			<br />
 			<button onClick={handleCreate}>SEND</button>
-		</section>
+		</Layout>
 	);
 }
 

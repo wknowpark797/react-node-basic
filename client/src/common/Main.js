@@ -1,5 +1,7 @@
+import Layout from './Layout';
+
 function Main() {
-	return <main>Main</main>;
+	return <Layout name={'Main'}></Layout>;
 }
 
 export default Main;
