@@ -1,15 +1,41 @@
 import { NavLink, Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 function Header() {
 	const activeStyle = { color: 'hotpink' };
 
-	return (
-		<header>
-			<h1>
-				<Link to='/'>LOGO</Link>
-			</h1>
+	const HeaderWrap = styled.header`
+		width: 350px;
+		height: 100vh;
+		background: #222;
+		position: fixed;
+		top: 0;
+		left: 0;
+		padding: 50px;
+	`;
+	const Logo = styled.h1`
+		margin-bottom: 40px;
+		a {
+			font: 40px/1 'arial';
+			color: #fff;
+		}
+	`;
+	const Gnb = styled.ul`
+		a {
+			display: block;
+			padding: 10px;
+			font: bold 16px/1 'arial';
+			color: #bbb;
+		}
+	`;
 
-			<ul id='gnb'>
+	return (
+		<HeaderWrap>
+			<Logo>
+				<Link to='/'>LOGO</Link>
+			</Logo>
+
+			<Gnb>
 				<li>
 					<NavLink to='/list' style={(props) => (props.isActive ? activeStyle : null)}>
 						Show List
@@ -20,8 +46,8 @@ function Header() {
 						Write Post
 					</NavLink>
 				</li>
-			</ul>
-		</header>
+			</Gnb>
+		</HeaderWrap>
 	);
 }
 

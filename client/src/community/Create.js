@@ -10,8 +10,16 @@ function Create() {
 		const item = { title: Title, content: Content };
 		axios
 			.post('/api/create', item)
-			.then((res) => console.log(res))
-			.catch((err) => console.log(err));
+			.then((res) => {
+				console.log(res);
+				alert('글 저장에 성공했습니다.');
+				setTitle('');
+				setContent('');
+			})
+			.catch((err) => {
+				console.log(err);
+				alert('글 저장에 실패했습니다.');
+			});
 	};
 
 	useEffect(() => {}, []);

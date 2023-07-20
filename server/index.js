@@ -54,3 +54,17 @@ app.post('/api/create', (req, res) => {
 	// 생성된 모델 인스턴스로부터 save 명령어로 DB 저장 (Promise 반환)
 	PostModel.save().then(() => res.json({ success: true }).catch(() => res.json({ success: false })));
 });
+
+// Read
+app.post('/api/read', (req, res) => {
+	Post.find()
+		.exec()
+		.then((doc) => {
+			console.log(doc);
+			res.json({ success: true, communityList: doc });
+		})
+		.catch((err) => {
+			console.log(err);
+			res.json({ success: false });
+		});
+});
