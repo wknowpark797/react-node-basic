@@ -51,7 +51,7 @@ router.post('/create', (req, res) => {
 });
 
 // Read - find() => Promise 반환
-router.post('/read', (req, res) => {
+router.get('/read', (req, res) => {
 	Post.find()
 		.exec()
 		.then((doc) => {
