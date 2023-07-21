@@ -10,7 +10,7 @@ function Detail() {
 
 	useEffect(() => {
 		axios
-			.post('/api/detail', params)
+			.post('/api/community/detail', params)
 			.then((res) => {
 				if (res.data.success) {
 					setDetail(res.data.detail);
