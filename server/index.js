@@ -102,3 +102,18 @@ app.post('/api/read', (req, res) => {
 			res.json({ success: false });
 		});
 });
+
+// Detail
+app.post('/api/detail', (req, res) => {
+	console.log('request: ', req.body);
+
+	Post.findOne({ communityNum: req.body.id })
+		.exec()
+		.then((doc) => {
+			console.log(doc);
+			res.json({ success: true, detail: doc });
+		})
+		.catch((err) => {
+			res.json({ success: false, err: err });
+		});
+});
