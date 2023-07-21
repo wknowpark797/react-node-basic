@@ -21,10 +21,14 @@
 const mongoose = require('mongoose');
 
 // 게시글 객체가 저장될 스키마 구조를 생성
-const postSchema = new mongoose.Schema({
-	title: String,
-	content: String,
-});
+const postSchema = new mongoose.Schema(
+	{
+		title: String,
+		content: String,
+		communityNum: Number,
+	},
+	{ collection: 'Posts' }
+);
 
 // 게시글 스키마 구조가 적용될 모델 생성자를 만든 뒤 export
 const Post = mongoose.model('Post', postSchema);

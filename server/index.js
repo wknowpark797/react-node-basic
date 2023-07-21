@@ -3,7 +3,8 @@ const path = require('path');
 const mongoose = require('mongoose');
 const app = express();
 const port = 5000; // 웹서버 구동을 5000번 포트로 응답받도록 설정
-const { Post } = require('./model/postSchema');
+const { Post } = require('./model/postSchema'); // 모델 생성자
+const { Counter } = require('./model/counterSchema');
 
 // 클라이언트로부터 보내진 데이터를 전달받도록 설정 (body-parser 설정)
 // body 객체에서 문자열로 전달해야 한다.
@@ -42,22 +43,53 @@ app.post('/api/send', (req, res) => {
 });
 
 // Create
+/*
+	[ 글 저장 작업 흐름 ]
+	1. Counter 모델에서부터 글번호를 가져온다.
+		- body-parser로 제목, 본문을 가져와서 글 번호를 추가한 후 모델 인스턴스에 저장
+		- 저장이 완료되면 카운터 모델에 있는 글번호 증가
+*/
 app.post('/api/create', (req, res) => {
 	console.log('request: ', req.body);
 
-	// PostSchema가 적용된 Post모델 생성자를 통해 저장 모델 인스턴스 생성
-	const PostModel = new Post({
-		title: req.body.title,
-		content: req.body.content,
-	});
+	// find: 모두 가져오기, findOne: 하나만 가져오기 (조건 필요)
+	Counter.findOne({ name: 'counter' })
+		.exec()
+		.then((doc) => {
+			const PostModel = new Post({
+				title: req.body.title,
+				content: req.body.content,
+				communityNum: doc.communityNum,
+			});
 
-	// 생성된 모델 인스턴스로부터 save 명령어로 DB 저장 (Promise 반환)
-	PostModel.save()
-		.then(() => res.json({ success: true }))
-		.catch(() => res.json({ success: false }));
+			// 포스트 저장, 카운터값 증가
+			PostModel.save().then(() => {
+				// update: $inc(기존값을 증가), $dec(기존값을 감소), $set(새로운값으로 변경)
+				Counter.updateOne({ name: 'counter' }, { $inc: { communityNum: 1 } })
+					.then(() => {
+						res.json({ success: true });
+					})
+					.catch(() => {
+						res.json({ success: false });
+					});
+			});
+		});
+
+	/*
+		// PostSchema가 적용된 Post모델 생성자를 통해 저장 모델 인스턴스 생성
+		const PostModel = new Post({
+			title: req.body.title,
+			content: req.body.content,
+		});
+
+		// 생성된 모델 인스턴스로부터 save 명령어로 DB 저장 (Promise 반환)
+		PostModel.save()
+			.then(() => res.json({ success: true }))
+			.catch(() => res.json({ success: false }));
+	*/
 });
 
-// Read
+// Read - find() => Promise 반환
 app.post('/api/read', (req, res) => {
 	Post.find()
 		.exec()

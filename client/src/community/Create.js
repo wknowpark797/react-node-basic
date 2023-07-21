@@ -8,6 +8,7 @@ function Create() {
 
 	const handleCreate = () => {
 		const item = { title: Title, content: Content };
+		// post는 두번째 인수값으로 데이터를 전달할 수 있다.
 		axios
 			.post('/api/create', item)
 			.then((res) => {
