@@ -79,4 +79,24 @@ router.post('/detail', (req, res) => {
 		});
 });
 
+// Update
+router.post('/update', (req, res) => {
+	console.log('request: ', req);
+
+	const item = {
+		title: req.body.title,
+		content: req.body.content,
+	};
+
+	Post.updateOne({ communityNum: req.body.id }, { $set: item })
+		.exec()
+		.then((doc) => {
+			console.log(doc); // 수정된 데이터 확인
+			res.json({ success: true });
+		})
+		.catch((err) => {
+			res.json({ success: false });
+		});
+});
+
 module.exports = router;
