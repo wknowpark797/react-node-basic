@@ -2,8 +2,10 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Layout from '../common/Layout';
+import { useSelector } from 'react-redux';
 
 function Create() {
+	const user = useSelector((store) => store.user);
 	const navigate = useNavigate();
 	const [Title, setTitle] = useState('');
 	const [Content, setContent] = useState('');
@@ -25,7 +27,9 @@ function Create() {
 			});
 	};
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		if (user.uid === '') navigate('/');
+	}, [navigate, user]);
 
 	return (
 		<Layout name={'Post'}>

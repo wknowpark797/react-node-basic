@@ -2,8 +2,10 @@ import Layout from '../common/Layout';
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 function Edit() {
+	const user = useSelector((store) => store.user);
 	const params = useParams();
 	const navigate = useNavigate();
 
@@ -36,6 +38,8 @@ function Edit() {
 	};
 
 	useEffect(() => {
+		if (user.uid === '') navigate('/');
+
 		axios
 			.post('/api/community/detail', params)
 			.then((res) => {
@@ -46,7 +50,7 @@ function Edit() {
 				}
 			})
 			.catch((err) => console.log(err));
-	}, []);
+	}, [navigate, user, params]);
 
 	useEffect(() => {
 		// 서버쪽으로 새로운 응답이 넘어올 때
