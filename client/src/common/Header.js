@@ -1,5 +1,7 @@
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import firebase from '../firebase';
 
 const HeaderWrap = styled.header`
 	width: 350px;
@@ -33,15 +35,28 @@ const Util = styled.ul`
 	gap: 20px;
 
 	li {
+		color: #777;
+		em {
+			color: orange;
+		}
+		span {
+			cursor: pointer;
+			&:hover {
+				color: hotpink;
+			}
+		}
 		a {
 			font: 14px/1 'arial';
-			color: #555;
+			color: #777;
 		}
 	}
 `;
 
 function Header() {
+	const navigate = useNavigate();
 	const activeStyle = { color: 'hotpink' };
+	const user = useSelector((store) => store.user);
+	console.log(user);
 
 	return (
 		<HeaderWrap>
@@ -55,24 +70,45 @@ function Header() {
 						Show List
 					</NavLink>
 				</li>
-				<li>
-					<NavLink to='/create' style={(props) => (props.isActive ? activeStyle : null)}>
-						Write Post
-					</NavLink>
-				</li>
+				{user.uid !== '' && (
+					<li>
+						<NavLink to='/create' style={(props) => (props.isActive ? activeStyle : null)}>
+							Write Post
+						</NavLink>
+					</li>
+				)}
 			</Gnb>
 
 			<Util>
-				<li>
-					<NavLink to='/login' style={(props) => (props.isActive ? activeStyle : null)}>
-						Login
-					</NavLink>
-				</li>
-				<li>
-					<NavLink to='/join' style={(props) => (props.isActive ? activeStyle : null)}>
-						Join
-					</NavLink>
-				</li>
+				{user.uid === '' ? (
+					<>
+						<li>
+							<NavLink to='/login' style={(props) => (props.isActive ? activeStyle : null)}>
+								Login
+							</NavLink>
+						</li>
+						<li>
+							<NavLink to='/join' style={(props) => (props.isActive ? activeStyle : null)}>
+								Join
+							</NavLink>
+						</li>
+					</>
+				) : (
+					<>
+						<li>
+							<em>{user.displayName}</em> 님 반갑습니다.
+						</li>
+						<li
+							onClick={() => {
+								firebase.auth().signOut();
+								alert('로그아웃 되었습니다.');
+								navigate('/');
+							}}
+						>
+							<span>Logout</span>
+						</li>
+					</>
+				)}
 			</Util>
 		</HeaderWrap>
 	);

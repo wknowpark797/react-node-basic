@@ -8,8 +8,28 @@ import Detail from './community/Detail';
 import Edit from './community/Edit';
 import Join from './user/Join';
 import Login from './user/Login';
+import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { loginUser, logoutUser } from './redux/userSlice';
+import firebase from './firebase';
 
 function App() {
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		// 파이어베이스에서 인증된 유저 정보 가져오기(로그인 정보)
+		firebase.auth().onAuthStateChanged((userInfo) => {
+			console.log(userInfo);
+
+			if (userInfo === null) dispatch(logoutUser());
+			else dispatch(loginUser(userInfo.multiFactor.user));
+		});
+	}, [dispatch]);
+
+	useEffect(() => {
+		// firebase.auth().signOut(); // 파이어베이스 로그아웃
+	}, []);
+
 	return (
 		<>
 			<GlobalStyle />
