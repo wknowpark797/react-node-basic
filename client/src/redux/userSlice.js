@@ -1,12 +1,13 @@
-// 파이어베이스의 값을 저장 (데이터 Fetching X)
+// 파이어베이스의 정적인 값을 저장 (데이터 Fetching X)
 import { createSlice } from '@reduxjs/toolkit';
 
 const userSlice = createSlice({
 	name: 'user',
 	initialState: {
 		displayName: '',
-		uid: '',
+		uid: '', // 고유값
 	},
+	// reducers: state를 변경하는 함수를 반환
 	reducers: {
 		loginUser: (state, action) => {
 			state.displayName = action.payload.displayName;

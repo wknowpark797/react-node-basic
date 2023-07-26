@@ -23,7 +23,7 @@ function Join() {
 
 		// 위의 조건을 통과하면 필요한 정보값을 firebase에 등록처리 (이메일, 비밀번호 정보만 필요)
 		const createdUser = await firebase.auth().createUserWithEmailAndPassword(Email, Pwd1);
-		await createdUser.user.updateProfile({ displayName: Name, gender: 'male' });
+		await createdUser.user.updateProfile({ displayName: Name });
 		console.log(createdUser.user);
 		alert('성공적으로 회원가입이 완료되었습니다.');
 		navigate('/login');

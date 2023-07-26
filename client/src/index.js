@@ -10,6 +10,7 @@ const store = configureStore({
 	reducer: {
 		user: userSlice,
 	},
+	// 글 저장시 발생하는 에러 처리
 	middleware: (getDefaultMiddleware) => getDefaultMiddleware({ serializableCheck: false }),
 });
 
