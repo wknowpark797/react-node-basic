@@ -29,6 +29,10 @@ function Join() {
 		await createdUser.user.updateProfile({ displayName: Name });
 		console.log(createdUser.user);
 
+		// 회원가입과 동시에 로그인되는 구조
+		// -> 강제로 로그아웃 처리
+		firebase.auth().signOut();
+
 		// 몽고DB에 저장
 		const item = {
 			displayName: createdUser.user.multiFactor.user.displayName,
@@ -36,9 +40,6 @@ function Join() {
 		};
 		axios.post('/api/user/join', item).then((res) => {
 			if (res.data.success) {
-				// 회원가입과 동시에 로그인되는 구조
-				// -> 강제로 로그아웃 처리
-				firebase.auth().signOut();
 				alert('성공적으로 회원가입이 완료되었습니다.');
 				navigate('/login');
 			} else {

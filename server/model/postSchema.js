@@ -26,7 +26,13 @@ const postSchema = new mongoose.Schema(
 		title: String,
 		content: String,
 		communityNum: Number,
-		userNum: Number,
+		// 특정 collection에서 다른 collection의 _id정보를 가져올 때
+		// User collection에서 참조하고자 하는 document의 object_id가 등록되면
+		// 해당 document의 정보값을 post에서 참조
+		writer: {
+			ref: 'User',
+			type: mongoose.Schema.Types.ObjectId,
+		},
 	},
 	{ collection: 'Posts' }
 );

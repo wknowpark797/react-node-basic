@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Post } = require('../model/postSchema'); // 모델 생성자
+const { User } = require('../model/userSchema');
 const { Counter } = require('../model/counterSchema');
 
 // Create
@@ -11,30 +12,37 @@ const { Counter } = require('../model/counterSchema');
 		- 저장이 완료되면 카운터 모델에 있는 글번호 증가
 */
 router.post('/create', (req, res) => {
-	console.log('request: ', req.body);
+	const params = req.body;
+
+	/*
+		1. Counter 모델에서 communityNum을 찾은 다음 client에서 받은 요청객체 파라미터에 추가
+		2. User collection에서 현재 로그인 사용자의 uid값으로 해당 유저 정보 document를 찾고 해당 document의 objectId값을 writer 속성에 추가
+		3. 해당 Post 모델의 writer 프로퍼티 안에는 작성자 정보의 document가 참조된 모델객체를 저장하고 저장이 성공하면 counter collection의 communityNum값을 증가시킨다.
+	*/
 
 	// find: 모두 가져오기, findOne: 하나만 가져오기 (조건 필요)
 	Counter.findOne({ name: 'counter' })
 		.exec()
 		.then((doc) => {
-			const PostModel = new Post({
-				title: req.body.title,
-				content: req.body.content,
-				communityNum: doc.communityNum,
-			});
+			params.communityNum = doc.communityNum;
 
-			// 포스트 저장, 카운터값 증가
-			PostModel.save().then(() => {
-				// update: $inc(기존값을 증가), $dec(기존값을 감소), $set(새로운값으로 변경)
-				Counter.updateOne({ name: 'counter' }, { $inc: { communityNum: 1 } })
-					.exec()
-					.then(() => {
-						res.json({ success: true });
-					})
-					.catch(() => {
-						res.json({ success: false });
+			User.findOne({ uid: params.uid })
+				.exec()
+				.then((doc) => {
+					params.writer = doc._id;
+					const PostModel = new Post(params);
+
+					PostModel.save().then(() => {
+						Counter.updateOne({ name: 'counter' }, { $inc: { communityNum: 1 } })
+							.exec()
+							.then(() => {
+								res.json({ success: true });
+							})
+							.catch(() => {
+								res.json({ success: false });
+							});
 					});
-			});
+				});
 		});
 
 	/*
@@ -54,6 +62,8 @@ router.post('/create', (req, res) => {
 // Read - find() => Promise 반환
 router.get('/read', (req, res) => {
 	Post.find()
+		// writer에 해당하는 정보를 풀어서 제공
+		.populate('writer')
 		.exec()
 		.then((doc) => {
 			console.log(doc);

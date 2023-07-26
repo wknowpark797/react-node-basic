@@ -17,7 +17,7 @@ function List() {
 
 	useEffect(() => {
 		axios.get('/api/community/read').then((res) => {
-			console.log(res);
+			console.log('post 정보', res.data.communityList);
 			setPosts(res.data.communityList);
 		});
 	}, []);
@@ -30,6 +30,7 @@ function List() {
 						<h2>
 							<Link to={`/detail/${post.communityNum}`}>{post.title}</Link>
 						</h2>
+						<p>작성자: {post.writer.displayName}</p>
 					</Item>
 				);
 			})}
