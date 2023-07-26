@@ -61,7 +61,7 @@ function Detail() {
 				<p>{Detail?.content}</p>
 			</DetailWrap>
 
-			{user.uid !== '' && (
+			{user.uid === Detail?.writer.uid && (
 				<BtnSet>
 					<button>
 						<Link to={`/edit/${params.id}`}>Edit</Link>

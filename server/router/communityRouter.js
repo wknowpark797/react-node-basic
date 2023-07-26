@@ -80,6 +80,7 @@ router.post('/detail', (req, res) => {
 	console.log('request: ', req.body);
 
 	Post.findOne({ communityNum: req.body.id })
+		.populate('writer')
 		.exec()
 		.then((doc) => {
 			console.log(doc);
