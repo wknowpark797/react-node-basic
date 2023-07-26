@@ -12,7 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 //express에서 react안쪽 build폴더까지의 경로를 static으로 지정
 app.use(express.static(path.join(__dirname, '../client/build')));
 
-app.use('/api/community', require('./router/communityRouter'));
+app.use('/api/community', require('./router/communityRouter')); // 커뮤니티 전용 라우터
+app.use('/api/user', require('./router/userRouter')); // 유저 전용 라우터
 
 app.listen(port, () => {
 	// mongoose로 몽고디비 데이터베이스 연동까지 확인할 수 있다.

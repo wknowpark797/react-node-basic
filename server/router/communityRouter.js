@@ -27,6 +27,7 @@ router.post('/create', (req, res) => {
 			PostModel.save().then(() => {
 				// update: $inc(기존값을 증가), $dec(기존값을 감소), $set(새로운값으로 변경)
 				Counter.updateOne({ name: 'counter' }, { $inc: { communityNum: 1 } })
+					.exec()
 					.then(() => {
 						res.json({ success: true });
 					})
