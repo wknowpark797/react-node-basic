@@ -52,7 +52,7 @@ function Detail() {
 				}
 			})
 			.catch((err) => console.log(err));
-	}, []);
+	}, [params]);
 
 	return (
 		<Layout name={'Detail'}>
