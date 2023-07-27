@@ -60,12 +60,12 @@ router.post('/create', (req, res) => {
 });
 
 // Read - find() => Promise 반환
-router.post('/read', (req, res) => {
+router.get('/read/:num', (req, res) => {
 	Post.find()
 		// writer에 해당하는 정보를 풀어서 제공
 		.populate('writer')
 		.sort({ createdAt: -1 })
-		.limit(req.body.count)
+		.limit(req.params.num)
 		.exec()
 		.then((doc) => {
 			console.log(doc);
@@ -78,10 +78,10 @@ router.post('/read', (req, res) => {
 });
 
 // Detail
-router.post('/detail', (req, res) => {
+router.get('/detail/:id', (req, res) => {
 	console.log('request: ', req.body);
 
-	Post.findOne({ communityNum: req.body.id })
+	Post.findOne({ communityNum: req.params.id })
 		.populate('writer')
 		.exec()
 		.then((doc) => {
@@ -94,7 +94,7 @@ router.post('/detail', (req, res) => {
 });
 
 // Update
-router.post('/update', (req, res) => {
+router.put('/update', (req, res) => {
 	console.log('request: ', req);
 
 	const item = {
@@ -114,8 +114,10 @@ router.post('/update', (req, res) => {
 });
 
 // Delete
-router.post('/delete', (req, res) => {
-	Post.deleteOne({ communityNum: req.body.id })
+// post - 두번째 인수로 파라미터를 보낸다.
+// delete - 쿼리 스트링으로 삭제할 포스트의 객체값을 넘겨야 한다. (REST API)
+router.delete('/delete/:id', (req, res) => {
+	Post.deleteOne({ communityNum: req.params.id })
 		.exec()
 		.then(() => {
 			res.json({ success: true });
@@ -126,3 +128,8 @@ router.post('/delete', (req, res) => {
 });
 
 module.exports = router;
+
+/*
+	[ read, delete ]: get방식(params) - url로 쿼리스트링 전송
+	[ create, update ]: post 방식
+*/

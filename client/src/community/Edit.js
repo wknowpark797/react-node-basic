@@ -25,7 +25,7 @@ function Edit() {
 		};
 
 		axios
-			.post('/api/community/update', updateItem)
+			.put('/api/community/update', updateItem)
 			.then((res) => {
 				if (res.data.success) {
 					alert('글수정을 완료했습니다.');
@@ -41,7 +41,7 @@ function Edit() {
 		if (user.uid === '') navigate('/');
 
 		axios
-			.post('/api/community/detail', params)
+			.get(`/api/community/detail/${params.id}`)
 			.then((res) => {
 				if (res.data.success) {
 					setDetail(res.data.detail);
