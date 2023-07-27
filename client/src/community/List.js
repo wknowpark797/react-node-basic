@@ -16,7 +16,7 @@ function List() {
 	const [Posts, setPosts] = useState([]);
 
 	useEffect(() => {
-		axios.get('/api/community/read').then((res) => {
+		axios.post('/api/community/read').then((res) => {
 			console.log('post 정보', res.data.communityList);
 			setPosts(res.data.communityList);
 		});

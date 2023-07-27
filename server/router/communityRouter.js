@@ -60,11 +60,12 @@ router.post('/create', (req, res) => {
 });
 
 // Read - find() => Promise 반환
-router.get('/read', (req, res) => {
+router.post('/read', (req, res) => {
 	Post.find()
 		// writer에 해당하는 정보를 풀어서 제공
 		.populate('writer')
 		.sort({ createdAt: -1 })
+		.limit(req.body.count)
 		.exec()
 		.then((doc) => {
 			console.log(doc);
